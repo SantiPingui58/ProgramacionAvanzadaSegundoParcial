@@ -3,26 +3,36 @@ package core.models;
 
 public abstract class Producto {
 	
-	private static int lastId;
+	private static int lastId = 1;
 	
     private final int id;
     private String nombre;
     private String descripcion;
     private double precio;
     private String paisImportacion;
-
-    public Producto(String nombre, String descripcion, double precio, String paisImportacion) {
+    private String marca;
+    public Producto(String nombre, String descripcion, double precio, String paisImportacion,String marca) {
         this.id = lastId++;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.paisImportacion = paisImportacion;
+        this.marca = marca;
     }
 
     public int getId() {
         return id;
     }
 
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    
     public String getNombre() {
         return nombre;
     }
@@ -60,7 +70,7 @@ public abstract class Producto {
     @Override
     public String toString() {
         return "ID: " + id + ", Nombre: " + nombre + ", Descripcion: " + descripcion +
-               ", Precio: " + precio + ", Pais de Importacion: " + paisImportacion;
+               ", Precio: " + precio + ", Pais de Importacion: " + paisImportacion + ", Marca: " + marca;
     }
 
     public void mostrar() {

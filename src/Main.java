@@ -1,13 +1,19 @@
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import core.Supermercado;
+import core.enums.TipoCereales;
 import core.exceptions.ProductoNoEncontradoException;
 import core.exceptions.SupermercadoSinProductosException;
 import core.interfaces.ConDescuento;
 import core.interfaces.EsAlimento;
 import core.interfaces.EsLiquido;
+import core.models.Cereales;
 import core.models.Producto;
+import core.models.Vino;
 
 
 public class Main {
@@ -17,12 +23,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		supermercado = Supermercado.getInstance();
-		String nombre = null, descripcion, tipoEnvase, nuevoNombre = null, nuevaMarca= null, nuevaDescripcion= null, nuevoTipoEnvase= null, nuevoTipoVino= null, nuevoPais= null;
-		double precio= 0, descuento= 0, nuevoPrecio = 0, nuevoDescuento= 0, nuevosGradosAlcohol= 0;
-		int id = 0, opcion=0;
-
-
-		    
+		int opcion=0;
 
 		do{
 	        System.out.println("----------------------------------");
@@ -99,30 +100,105 @@ public class Main {
 		    	        	p.mostrar();
 		            	break;
 		            case 7:
-		            	producto = buscarProducto();
-		            	HashMap<Integer,String> hashmap = new HashMap<>();
+		            	producto = buscarProducto();	 
+		            	
 		            	System.out.println("----------------------------------");
 		    	        System.out.println("Menú de modificación");
 		    	        System.out.println("----------------------------------");
-		    	        int i = 0;
-		    	        System.out.println(i++ + ". Modificar nombre.");
-		    	        System.out.println(i++ +". Modificar descripción.");
-		    	        System.out.println(i++ + ". Modificar precio.");
-		    	        System.out.println(i++ +". Modificar pais de importación.");
-		    	        
-		    	        if (producto instanceof ConDescuento) {
-		    	            System.out.println(i++ +". Modificar descuento.");	
-		    	        }
-		    	        if (producto instanceof EsAlimento) {
-		    	            System.out.println(i++ +". Modificar caducidad.");	
-		    	        }
+		    	        int indexMenu = 0;
+		            	LinkedHashMap<Integer,String> hashmap = new LinkedHashMap<>();
+		            	hashmap.put(indexMenu++, "nombre");
+		            	hashmap.put(indexMenu++, "descripcion");
+		            	hashmap.put(indexMenu++, "precio");
+		            	hashmap.put(indexMenu++, "importacion");
+		             	hashmap.put(indexMenu++, "marca");
+		            	
+		            	if (producto instanceof Cereales) 
+		            	 	hashmap.put(indexMenu++, "tipo cereales");
+		            	
+		            	if (producto instanceof Vino) {
+		            	 	hashmap.put(indexMenu++, "tipo vino");
+		            	 	hashmap.put(indexMenu++, "grados alcohol");
+		            	}
+		    	        if (producto instanceof ConDescuento) 
+		    	        	hashmap.put(indexMenu++, "descuento");
+		    	        if (producto instanceof EsAlimento) 
+		    	        	hashmap.put(indexMenu++, "caducidad");
 		    	        
 		    	        if (producto instanceof EsLiquido) {
-		    	        	  System.out.println(i++ +". Modificar volumen.");	
-		    	            System.out.println(i++ +". Modificar tipo de envase.");	
+		    	        	hashmap.put(indexMenu++, "volumen");
+		    	        	hashmap.put(indexMenu++, "tipo de envase");
 		    	        }
 
+		    	        for (Entry<Integer, String> e : hashmap.entrySet()) {
+		    	        	System.out.println(e.getKey() + ". Modificar " + e.getValue());
+		    	        }
 		    	        System.out.println("----------------------------------");
+		    	        
+		    	    	opcion = Integer.parseInt(input.nextLine());
+		    	    	
+		    	    	String atributoModificar = hashmap.get(opcion);
+		    	    	
+		    	    	if (atributoModificar!=null) {
+		    	    		System.out.println("----------------------------------");
+							System.out.println("Ingrese el nuevo valor del atributo del producto.");
+							System.out.println("----------------------------------");
+		    	    		String nuevoAtributo = input.nextLine();
+		    	    		try {
+		    	    		switch (atributoModificar) {
+		    	    		case "nombre": 
+		    	    			producto.setNombre(nuevoAtributo);
+		    	    			break;
+		    	    		case "descripcion": 
+		    	    			producto.setDescripcion(nuevoAtributo);
+		    	    			break;
+		    	    		case "precio": 
+		    	    				producto.setPrecio(Double.parseDouble(nuevoAtributo));
+		    	    				break;
+		    	    		case "importacion": 
+		    	    			producto.setPaisImportacion(nuevoAtributo);
+		    	    			break;	
+		    	    		case "marca": 
+		    	    			producto.setMarca(nuevoAtributo);
+		    	    			break;	
+		    	    		case "tipo cereales": 
+		    	    			Cereales cereales = (Cereales) producto;
+		    	    			cereales.setTipo(TipoCereales.valueOf(nuevoAtributo));
+		    	    			break;	
+		    	    		case "tipo vino": 
+		    	    			Vino vino = (Vino) producto;
+		    	    			vino.setTipoVino(nuevoAtributo);
+		    	    			break;	
+		    	    		case "grados alcohol": 
+		    	    			 vino = (Vino) producto;
+		    	    			vino.setGradosAlcohol(Double.parseDouble(nuevoAtributo));
+		    	    			break;	
+		    	    		case "descuento": 
+		    	    			ConDescuento productoConDescuento = (ConDescuento) producto;
+		    	    			productoConDescuento.setDescuento(Double.parseDouble(nuevoAtributo));
+	    	    				break;
+		    	    		case "caducidad": 
+		    	    			EsAlimento productoAlimento = (EsAlimento) producto;
+		    	    			productoAlimento.setCaducidad(LocalDate.parse(nuevoAtributo, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+	    	    				break;	
+		    	    		case "volumen": 
+		    	    			EsLiquido productoLiquido = (EsLiquido) producto;
+		    	    			productoLiquido.setVolumen(Double.parseDouble(nuevoAtributo));
+	    	    				break;	
+		    	    		case "tipo de envase": 
+		    	    			 productoLiquido = (EsLiquido) producto;
+		    	    			productoLiquido.setTipoEnvase(nuevoAtributo);
+	    	    				break;	
+		    	    		}
+		    	    		
+		    	    		System.out.println("Atributo " + atributoModificar + " ha sido seteado a: " + nuevoAtributo + " correctamente");
+		    	    		} catch(Exception ex) {
+		    	    			System.out.println("Valor para atributo " +atributoModificar + " invalida");
+		    	    		}
+		    	    	} else {
+		    	    		System.out.println("Valor no válido");
+		    	    	}
+		    	        break;
 		            case 8:
 					try {
 						for (Producto p : supermercado.getAlimentos()) 
@@ -137,22 +213,21 @@ public class Main {
 		                break;
 		            case 0:
 		                System.out.println("¡Hasta luego!");
-				input.close();
+			
 		                break;
 		            default:
 		                System.out.println("Opción inválida. Vuelva a intentarlo.");
-				input.nextLine();
 		        }
 
 		        }while(opcion!=0);
-		        
+		input.close();   
 		    }
 	
 	
 	public static Producto buscarProducto() {
 		try {
 			System.out.println("----------------------------------");
-			System.out.println("Ingrese el nombre o el ID del producto que quiere ver.");
+			System.out.println("Ingrese el nombre o el ID del producto que quiere buscar");
 			System.out.println("----------------------------------");
 			
 			String inputNombre = input.nextLine();

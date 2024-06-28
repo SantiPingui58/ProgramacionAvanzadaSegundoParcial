@@ -3,7 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ import core.models.Producto;
 import core.models.Vino;
 
 public class Supermercado {
-    private Set<Producto> productos;
+    private LinkedHashSet<Producto> productos;
 
     private static Supermercado instance;
     public static Supermercado getInstance() {
@@ -28,7 +28,7 @@ public class Supermercado {
     }
    
     public Supermercado() {
-        this.productos = new HashSet<>();
+        this.productos = new LinkedHashSet<>();
     }
     
     public Set<Producto> getProductos() {

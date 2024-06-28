@@ -3,21 +3,11 @@ package core.models;
 import core.interfaces.ConDescuento;
 
 public class Detergente extends Producto implements ConDescuento {
-    private String marca;
     private double descuento;
 
     public Detergente(String nombre, String descripcion, double precio, String paisImportacion, String marca) {
-        super(nombre, descripcion, precio, paisImportacion);
-        this.marca = marca;
+        super(nombre, descripcion, precio, paisImportacion,marca);
         this.descuento = 0.0;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
     }
 
     @Override
@@ -37,6 +27,6 @@ public class Detergente extends Producto implements ConDescuento {
 
     @Override
     public String toString() {
-        return super.toString() + ", Marca: " + marca + ", Descuento: " + descuento + "%, Precio con Descuento: " + getPrecioDescuento();
+        return super.toString() + ", Descuento: " + descuento + "%, Precio con Descuento: " + getPrecioDescuento();
     }
 }

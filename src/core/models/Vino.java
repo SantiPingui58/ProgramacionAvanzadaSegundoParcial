@@ -7,7 +7,6 @@ import core.interfaces.EsAlimento;
 import core.interfaces.EsLiquido;
 
 public class Vino extends Producto implements EsLiquido, EsAlimento, ConDescuento {
-    private String marca;
     private String tipoVino;
     private double gradosAlcohol;
     private double volumen;
@@ -16,19 +15,10 @@ public class Vino extends Producto implements EsLiquido, EsAlimento, ConDescuent
     private double descuento;
 
     public Vino(String nombre, String descripcion, double precio, String paisImportacion, String marca, String tipoVino, double gradosAlcohol) {
-        super(nombre, descripcion, precio, paisImportacion);
-        this.marca = marca;
+        super(nombre, descripcion, precio, paisImportacion,marca);
         this.tipoVino = tipoVino;
         this.gradosAlcohol = gradosAlcohol;
         this.descuento = 0.0;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
     }
 
     public String getTipoVino() {
@@ -99,7 +89,7 @@ public class Vino extends Producto implements EsLiquido, EsAlimento, ConDescuent
 
     @Override
     public String toString() {
-        return super.toString() + ", Marca: " + marca + ", Tipo de Vino: " + tipoVino + ", Grados de Alcohol: " + gradosAlcohol +
+        return super.toString() + ", , Tipo de Vino: " + tipoVino + ", Grados de Alcohol: " + gradosAlcohol +
                ", Volumen: " + volumen + "L, Tipo de Envase: " + tipoEnvase + ", Caducidad: " + caducidad +
                ", Calorias: " + getCalorias() + ", Descuento: " + descuento + "%, Precio con Descuento: " + getPrecioDescuento();
     }
