@@ -1,5 +1,10 @@
 package core.dao;
 
-public class ProductoDAO {
 
+import core.models.Producto;
+
+public interface ProductoDAO {
+    void guardar(Producto producto);
+    void eliminar(int id);
+    
 }
